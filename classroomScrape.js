@@ -70,6 +70,11 @@ function getClassroomTimes(buildingRoomObject) {
   request(options);
 }
 
+function getBusyTimes(buildingRoomObject)
+{
+  
+}
+
 let options = {
   method: "GET",
   url: mainURL,
