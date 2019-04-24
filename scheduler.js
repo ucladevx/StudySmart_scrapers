@@ -7,18 +7,18 @@ var lib_info_scraper_interval = 10080 * min_to_ms
 // console.log("I am doing my 5 minutes check");
 
 setInterval(function () {
-  console.log("I am doing my 1 week check");
-  lib_info_scraper.scrape();
-  // do your stuff here
+ console.log("I am doing my 1 week check");
+ lib_info_scraper.scrape();
+  //do your stuff here
 }, lib_info_scraper_interval); 
 
 setInterval(function () {
   console.log("I am doing my 5 minutes check");
   reslife_scraper.scrape();
   // do your stuff here
-}, lib_info_scraper_interval);
+}, reslife_scraper_interval);
 
-// setInterval(function () {
+//setInterval(function () {
 //   console.log("I am doing my 10 minutes check");
 //   // do your stuff here
 // }, the_interval * 2);
