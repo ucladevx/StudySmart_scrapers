@@ -21,7 +21,7 @@ async function postRequest(obj) {
 module.exports = {
   scrape: async function () {
     try {
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({headless: false});
       const [page] = await browser.pages();
 
       await page.goto('https://reslife.ucla.edu/reserve');
@@ -73,7 +73,7 @@ module.exports = {
         hour2.click();
         await new Promise((resolve) => setTimeout(resolve, 2000));
         const length2 = document.querySelectorAll('.calendar-available').length;
-        for (let j = 0; j < 2 && j < length2; j++) {
+        for (let j = 0; j < 7 && j < length2; j++) {
           const data = [];
           const element = document.querySelectorAll('.calendar-available').item(j);
           element.click();
@@ -104,8 +104,6 @@ module.exports = {
           }
           data1.push(data)
         }
-        if (n == 3)
-          break;
       }
       return data1;
     });
