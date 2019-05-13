@@ -20,7 +20,7 @@ JSON Format
         const browser = await puppeteer.launch(/*{headless:false}*/);
         const [page] = await browser.pages();
         //Url to visit
-        await page.goto('http://calendar.library.ucla.edu/spaces?lid=4394&gid=0');
+        await page.goto('http://calendar.library.ucla.edu/allspaces');
 
         const result = await page.evaluate(async () => {
             //Wait for webpage to load (may need to change this 2000 ms)
@@ -41,10 +41,13 @@ JSON Format
                 var timeAndDay = splitByCommas[0].split(" ");
                 //Split third element of splitByCommas array by dashes
                 var yearAndRoom = splitByCommas[2].split("-"); 
+                var room = yearAndRoom[1].split(" ");
+                room = room[room.length-1];
+                //data.push(room);
                 
                 //Specific study room numbers for Powell
-                if     (yearAndRoom[1].indexOf('A') > -1 || yearAndRoom[1].indexOf('B') > -1 || yearAndRoom[1].indexOf('C') > -1 || 
-                        yearAndRoom[1].indexOf('D') > -1 || yearAndRoom[1].indexOf('E') > -1 || yearAndRoom[1].indexOf('F') > -1) 
+                if (room ==  'A' || room == 'B' || room == 'C' || 
+                room == 'D'|| room == 'E' || room == 'F') 
                     {
                         obj["Building Name"] = "Powell Library";
                         obj["Room"] = yearAndRoom[1].trim();
@@ -52,14 +55,14 @@ JSON Format
                         obj["Date"] = splitByCommas[1].trim() + yearAndRoom[0].trimRight();
                         obj["Day"] = timeAndDay[1].trim();
                         obj["Start Time"] = timeAndDay[0].trim();
-                    } 
+                    }  
                 
                 //Specific room numbers for YRL study rooms
-                else if(yearAndRoom[1].indexOf('G01') > -1 || yearAndRoom[1].indexOf('G02') > -1 || yearAndRoom[1].indexOf('G03') > -1 || 
-                        yearAndRoom[1].indexOf('G04') > -1 || yearAndRoom[1].indexOf('G05') > -1 || yearAndRoom[1].indexOf('G06') > -1 ||
-                        yearAndRoom[1].indexOf('G07') > -1 || yearAndRoom[1].indexOf('G08') > -1 || yearAndRoom[1].indexOf('G09') > -1 || 
-                        yearAndRoom[1].indexOf('G10') > -1 || yearAndRoom[1].indexOf('G11') > -1 || yearAndRoom[1].indexOf('G12') > -1 || 
-                        yearAndRoom[1].indexOf('G13') > -1 || yearAndRoom[1].indexOf('G14') > -1 || yearAndRoom[1].indexOf('G15') > -1) 
+                else if(room ==  'G01'|| room ==  'G02' || room ==  'G03' || 
+                room ==  'G04'|| room ==  'G05' || room ==  'G06' ||
+                room ==  'G07' || room ==  'G08' || room ==  'G09'|| 
+                room ==  'G10' || room ==  'G11' || room ==  'G12' || 
+                room ==  'G13' || room ==  'G14'|| room ==  'G15') 
                     {
                         obj["Building Name"] = "Young Research Library";
                         obj["Room"] = yearAndRoom[1].trim();
@@ -79,7 +82,7 @@ JSON Format
                         obj["Start Time"] = timeAndDay[0].trim();
                     }
         
-                //Add to data array
+                //Add to data array*/
                 data.push(JSON.stringify(obj));  
             }
 
