@@ -90,7 +90,7 @@ JSON Format
         });
 
       //  for (let i = 0; i < result.length; i++) {
-            request.post({ url: "http://studysmart-test-env.dqiv29pdi2.us-east-1.elasticbeanstalk.com/librooms", headers: { 'content-type': 'application/json' }, body: JSON.stringify(result) }, function (err, response, body) {
+            request.post({ url: "http://studysmart-env-2.dqiv29pdi2.us-east-1.elasticbeanstalk.com/librooms", headers: { 'content-type': 'application/json' }, body: JSON.stringify(result) }, function (err, response, body) {
               console.log(response.body)
               new Promise((resolve) => setTimeout(resolve, 10000));
             })
