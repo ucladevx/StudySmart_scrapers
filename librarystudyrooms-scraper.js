@@ -83,11 +83,18 @@ JSON Format
                     }
         
                 //Add to data array*/
-                data.push(JSON.stringify(obj));  
+                data.push(obj);  
             }
 
         return data;
         });
+
+      //  for (let i = 0; i < result.length; i++) {
+            request.post({ url: "http://studysmart-test-env.dqiv29pdi2.us-east-1.elasticbeanstalk.com/librooms", headers: { 'content-type': 'application/json' }, body: JSON.stringify(result) }, function (err, response, body) {
+              console.log(response.body)
+              new Promise((resolve) => setTimeout(resolve, 10000));
+            })
+        //  }
 
         console.log(result);
         await browser.close();
