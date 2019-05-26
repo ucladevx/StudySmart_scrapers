@@ -133,11 +133,45 @@ module.exports = {
 
 
             console.log(data);
-            request.post({ url: "http://studysmart-env-2.dqiv29pdi2.us-east-1.elasticbeanstalk.com/libinfo", headers: { 'content-type': 'application/json' }, body: JSON.stringify(result) }, function (err, response, body) {
-                console.log(response.body)
-                //console.log(JSON.stringify(response.body))
+
+            int numDone = 0;
+
+            data.forEach(obj => {
+                const params = {
+                    TableName: "lib_hours",
+                    Key: {
+                        "name": obj["name"]
+                    }
+
+                    UpdateExpression: "set #location = :lo, #phone = :ph, #image = :im, #start_date = :st, #department = #dp",
+
+                    ExpressionAttributeNames: {
+                        "#location": "location",
+                        "#phone": "phone" ,
+                        "image": "image",
+                        "#start_date": "start_date",
+                        "#department": "department",
+                    },
+
+                    ExpressionAttributeValues: {
+                       ":lo": obj["location"],
+                       ":ph": obj["phone"],
+                       ":im": obj["image"],
+                       ":st": obj["start_date"],
+                       ":dp": obj["department"]
+                    }
+                }
+
+                docClient.update(params, function(err, data) {
+                    if (err) console.log(err);
+
+                    numDone += 1;
+
+                    if(numDone == data.length){
+                        return;
+                    }
+                })
             })
-            return;
         }
 
         //If there is an error, write to console and exit
