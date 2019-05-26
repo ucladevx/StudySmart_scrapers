@@ -1,8 +1,9 @@
 'use strict';
 
-const puppeteer = require('puppeteer');
 const request = require('request');
-
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+var docClient = new AWS.DynamoDB.DocumentClient();
 /*
 JSON Format {
   "Room Details": "Sproul Study Room 110E (max 4 people)",
