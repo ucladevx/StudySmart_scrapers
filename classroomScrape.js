@@ -72,7 +72,7 @@ function getClassroomTimes(buildingRoomObject) {
     //  console.log(getAvailableTimes(finalClassroomObject));
     finalClassroomObject = getAvailableTimes(finalClassroomObject)
         let params = {
-          TableName: "study_info",
+          TableName: "class_scrape_table",
           Item: finalClassroomObject
         };
         console.log(params);
