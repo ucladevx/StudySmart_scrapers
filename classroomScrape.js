@@ -1,4 +1,7 @@
 "use strict";
+var AWS = require("aws-sdk");
+AWS.config.update({ region: "us-east-1" });
+var docClient = new AWS.DynamoDB.DocumentClient();
 
 const request = require("request");
 const moment = require("moment");
@@ -65,9 +68,23 @@ function getClassroomTimes(buildingRoomObject) {
         room: buildingRoomObject.roomName,
         classTimes: body
       };
-      console.log(finalClassroomObject);
-      console.log(getAvailableTimes(finalClassroomObject));
-      //getAvailableTimes(finalClassroomObject);
+      //console.log(finalClassroomObject);
+    //  console.log(getAvailableTimes(finalClassroomObject));
+    finalClassroomObject = getAvailableTimes(finalClassroomObject)
+        let params = {
+          TableName: "study_info",
+          Item: finalClassroomObject
+        };
+        console.log(params);
+        docClient.put(params, function(err, data) {
+          if (err) {
+            throw err;
+            console.log("error");
+          }
+          console.log("successfully put item");
+          console.log(params);
+        });
+    //getAvailableTimes(finalClassroomObject);
       //classroomTimes.push(finalClassroomObject);
     }
   };
@@ -97,6 +114,7 @@ function getAvailableTimes(classroomTimeObject)
   inverseObject.building = classroomTimeObject.building;
   inverseObject.room = classroomTimeObject.room;
   inverseObject.classTimes = [];
+  inverseObject.class_key = "";
   let timesByDay = {'1': [], '2': [], '3': [], '4': [], '5': [], 'Varies':[]};
   let inverseTimesByDay = {'1': [], '2': [], '3': [], '4': [], '5': [], 'Varies':[]}
   for (let timeSlot of classroomTimeObject.classTimes) {
@@ -119,7 +137,8 @@ function getAvailableTimes(classroomTimeObject)
   {
     for(let slot of inverseTimesByDay[d])
     {
-      inverseObject.classTimes.push({'day':d, 'start':slot['start'], 'end':slot['end']});
+      inverseObject.classTimes.push({'day':d, 'start':tomins(slot['start']), 'end':tomins(slot['end'])});
+      inverseObject.class_key = inverseObject.building + inverseObject.room;
     }
   }
   return inverseObject;
@@ -138,6 +157,7 @@ let options = {
     let classrooms = body.map(processClassroomJson); 
     classrooms.forEach(getClassroomTimes);    
     //classrooms.forEach(getAvailableTimes);
+    
   }
 };
 
