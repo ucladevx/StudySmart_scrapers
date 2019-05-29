@@ -10,13 +10,12 @@ const classroomURL =
   "https://www.registrar.ucla.edu/desktopmodules/ClassRoomSearch/api/webapi/GetCalendarEvents";
 
 function processClassroomJson(buildingClassroom) {
-  let toReturn = {
+  return {
     building: buildingClassroom.value.slice(0, 8),
     room: buildingClassroom.value.substr(9),
     buildingName: buildingClassroom.label.slice(0, 8).trim(),
     roomName: buildingClassroom.label.substr(9).trim()
   };
-  return toReturn;
 }
 
 function processClassTimeObject(buildingArray, classNameTime) {
@@ -44,6 +43,8 @@ function processClassTimeObject(buildingArray, classNameTime) {
   return buildingArray;
 }
 
+// let classroomTimes = [];
+
 function getClassroomTimes(buildingRoomObject) {
   let options = {
     method: "GET",
@@ -65,14 +66,63 @@ function getClassroomTimes(buildingRoomObject) {
         classTimes: body
       };
       console.log(finalClassroomObject);
+      console.log(getAvailableTimes(finalClassroomObject));
+      //getAvailableTimes(finalClassroomObject);
+      //classroomTimes.push(finalClassroomObject);
     }
   };
   request(options);
 }
 
-function getBusyTimes(buildingRoomObject)
+function tomins(timeString)
 {
+  let timeObj = stoiParser(timeString);
+  return timeObj['hour'] * 60 + timeObj['minutes'];
+}
+
+function stoiParser(timeString)
+{
+  return {
+  'hour': parseInt(timeString.substring(0, 2) ), 
+  'minutes': parseInt(timeString.substring(3) )
+  };
+}
+
+
+
+
+function getAvailableTimes(classroomTimeObject)
+{
+  let inverseObject = {};
+  inverseObject.building = classroomTimeObject.building;
+  inverseObject.room = classroomTimeObject.room;
+  inverseObject.classTimes = [];
+  let timesByDay = {'1': [], '2': [], '3': [], '4': [], '5': [], 'Varies':[]};
+  let inverseTimesByDay = {'1': [], '2': [], '3': [], '4': [], '5': [], 'Varies':[]}
+  for (let timeSlot of classroomTimeObject.classTimes) {
+    timesByDay[timeSlot.day].push(timeSlot);
+  }
+  for(let d in timesByDay)
+  {
+    let s = '08:00';
+    for(let slot of timesByDay[d])
+    { 
+      if(tomins(slot['start']) - tomins(s) > 15){
+        inverseTimesByDay[d].push({'day': d, 'start': s, 'end': slot['start']});
+      }
+      s = slot['end'];
+    }
+    inverseTimesByDay[d].push({'day': d, 'start': s, 'end': '22:00'});
+  }
   
+  for(let d in inverseTimesByDay)
+  {
+    for(let slot of inverseTimesByDay[d])
+    {
+      inverseObject.classTimes.push({'day':d, 'start':slot['start'], 'end':slot['end']});
+    }
+  }
+  return inverseObject;
 }
 
 let options = {
@@ -80,9 +130,14 @@ let options = {
   url: mainURL,
   json: true,
   callback: function(error, response, body) {
+    if (error) {
+      console.log("error getting classrooms", error);
+      return;
+    }
     console.log("got classrooms");
-    let classrooms = body.map(processClassroomJson);
-    classrooms.forEach(getClassroomTimes);
+    let classrooms = body.map(processClassroomJson); 
+    classrooms.forEach(getClassroomTimes);    
+    //classrooms.forEach(getAvailableTimes);
   }
 };
 
