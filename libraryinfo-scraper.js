@@ -78,6 +78,14 @@ module.exports = {
             const addresses = dom.window.document.querySelectorAll('div.location__address')
             //find opening times of the 11 libraries
             const time_of_dp = dom.window.document.querySelectorAll('table.opening-hours-week')
+            console.log(time_of_dp[0].querySelectorAll('tbody tr')[0].querySelectorAll('td')[1].textContent)
+            console.log("//")
+            console.log(time_of_dp[0].querySelectorAll('tbody tr')[1].innerHTML)
+            console.log("//")
+
+            console.log(time_of_dp[0].querySelectorAll('tbody tr')[2].innerHTML)
+
+            console.log(time_of_dp[0].querySelectorAll('tbody tr').innerHTML)
             //find phone number
             const phones = dom.window.document.querySelectorAll('span.location__phone-number')
             //find image
@@ -85,89 +93,92 @@ module.exports = {
             const num_rooms = names.length;
             const data = [];
             for (let n = 0; n < num_rooms; n++) {
-                var obj = new Object();
+                var obj = {};
                 //add name to lib obj
-                const lib_name = names[n].innerText
+                const lib_name = names[n].textContent
                 obj["name"] = lib_name
-
                 //add location to lib obj
-                const lib_loc = addresses[n].innerText
+                const lib_loc = addresses[n].textContent
                 obj["location"] = lib_loc
                 //add phone-number to lib obj
-                const lib_phone = phones[n].innerText
+                const lib_phone = phones[n].textContent
                 obj["phone"] = lib_phone
                 //add image to lib obj
                 const img = imgs[n + 1].src
                 obj["image"] = img
                 //add department to lib obj
                 const department = []
-                lib_dp = time_of_dp[n].innerText
-                list_dp = lib_dp.split("\n")
-                //first line : date 
-                //after : openning time for each department
-                const date = list_dp[0].split('\t')
-                obj["start_date"] = date[0].split("-")[0]
-                const num_dp = list_dp.length - 1
-                for (let i = 0; i < num_dp; i++) {
-                    var dp_obj = new Object();
-                    dp_info = list_dp[i + 1].split('\t')
-                    dp_obj["department_name"] = dp_info[0]
 
-                    //console.log(list_dp[i+1].split('\t'));
-                    //dp_open=dp_info[1].split("  ")
-                    //dp_obj["dp_info"]=dp_info[2]
+                department_array = time_of_dp[n].querySelectorAll('tbody tr')
+
+
+
+
+
+                const num_dp = department_array.length
+
+                for (let i = 0; i < num_dp; i++) {
+                    dep_timings = department_array[i].querySelectorAll('td')
+
+                    var dp_obj = {};
+                    dp_obj["department_name"] = dep_timings[0].textContent
+
                     dp_open_time = []
-                    const open_day = dp_info.length - 1
-                    for (let j = 0; j < open_day; j++) {
-                        var dp_time_obj = new Object();
-                        dp_time_obj["dp_open_time"] = dp_info[j + 1]
-                        dp_time_obj["date"] = date[j + 1]
+                    const open_day = dep_timings.length
+                    for (let j = 1; j < open_day; j++) {
+                        var dp_time_obj = {};
+                        console.log(dep_timings[j].textContent)
+                        dp_time_obj["time"] = dep_timings[j].textContent
+                        dp_time_obj["date"] = j
+                        console.log(dep_timings[0].textContent)
+                        console.log(dp_time_obj)
                         dp_open_time.push(dp_time_obj);
                     }
                     dp_obj["time"] = dp_open_time
                     department.push(dp_obj);
                 }
                 obj["department"] = department
+                console.log(department)
                 data.push(obj);
             }
 
 
-            console.log(data);
+            // console.log(data);
 
-            int numDone = 0;
+            var numDone = 0;
 
             data.forEach(obj => {
                 const params = {
                     TableName: "lib_hours",
                     Key: {
                         "name": obj["name"]
-                    }
+                    },
 
                     UpdateExpression: "set #location = :lo, #phone = :ph, #image = :im, #start_date = :st, #department = #dp",
 
                     ExpressionAttributeNames: {
                         "#location": "location",
-                        "#phone": "phone" ,
+                        "#phone": "phone",
                         "image": "image",
                         "#start_date": "start_date",
                         "#department": "department",
                     },
 
                     ExpressionAttributeValues: {
-                       ":lo": obj["location"],
-                       ":ph": obj["phone"],
-                       ":im": obj["image"],
-                       ":st": obj["start_date"],
-                       ":dp": obj["department"]
+                        ":lo": obj["location"],
+                        ":ph": obj["phone"],
+                        ":im": obj["image"],
+                        ":st": obj["start_date"],
+                        ":dp": obj["department"]
                     }
                 }
 
-                docClient.update(params, function(err, data) {
+                docClient.update(params, function (err, data) {
                     if (err) console.log(err);
 
                     numDone += 1;
 
-                    if(numDone == data.length){
+                    if (numDone == data.length) {
                         return;
                     }
                 })
@@ -182,4 +193,4 @@ module.exports = {
 
     }
 }
-// test();
+module.exports.scrape()
