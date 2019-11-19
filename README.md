@@ -12,7 +12,9 @@ are available.
 libraryinfo-scraper: scrapes library info 
 
 * **librarystudyrooms-scraper**: This scraper scrapes http://calendar.library.ucla.edu/spaces?lid=4394&gid=0 
-for study rooms in Powell Library and YRL that are available upto 3 days ahead from the current date. 
+for study rooms in Powell Library and YRL that are available upto 3 days ahead from the current date.
+
+* **libinfo-scraper**: This scraper scrapes https://www.library.ucla.edu/hours for library info. Information includes library dates & hours. This scraper is written in python3 intsead of javascript (BeautifulSoup).
 
 Before running these scrapers, it is advisable to download the required Node modules. This can be done using
 
