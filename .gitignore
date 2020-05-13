@@ -1,1 +1,5 @@
-config.py
+*/node_modules/
+libinfo-scraper/
+!libinfo-scraper/__pycache__
+!libinfo-scraper/easy_install.py
+!libinfo-scraper/libinfo-scraper.py
