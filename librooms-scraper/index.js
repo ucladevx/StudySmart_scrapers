@@ -466,3 +466,10 @@ function compareDatabaseData(params, scrapedData) {
   });
 }
 
+//uncomment out this part if you want to run it locally 
+/*try {
+  exports.handler({});
+} catch (e) {
+  console.log("error");
+  // Deal with the fact the chain failed
+}*/
