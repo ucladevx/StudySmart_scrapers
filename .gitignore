@@ -1,4 +1,5 @@
 */node_modules/
+LEGACY_SCRAPERS/*/node_modules/
 libinfo-scraper/*
 !libinfo-scraper/
 !libinfo-scraper/__pycache__

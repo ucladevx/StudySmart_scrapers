@@ -1,0 +1,2679 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- iid: 3244 -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link href="/css201/LibCal_public.min.css" rel="stylesheet" />
+    <link href="/css201/print.min.css" rel="stylesheet" media="print" />
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+      window.jQuery ||
+        document.write('<script src="/js201/jquery.min.js">\x3C/script>');
+    </script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+      jQuery.ui ||
+        document.write('<script src="/js201/jquery-ui.min.js">\x3C/script>');
+    </script>
+
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+      typeof $().modal == "function" ||
+        document.write('<script src="/js201/bootstrap.min.js">\x3C/script>');
+    </script>
+    <script src="/js201/LibCal_public.min.js"></script>
+    <script>
+      springSpace.dateFormat = "dddd, MMMM D, YYYY";
+      springSpace.dateShortFormat = "dddd, MMMM D, YYYY";
+      springSpace.timeFormat = "h:mma";
+      springSpace.currency = "USD";
+      springSpace.currencySymbol = "$";
+    </script>
+    <script>
+      var springLang = {
+        eq_GoToNextAvailable: "Next Available",
+        eq_js_add_cart_btn: "Add to Cart",
+        eq_js_add_cc_btn: "Add to Cart & Checkout",
+        eq_js_add_eq_btn: "Add Equipment",
+        eq_js_add_start: "All additional items must have a starting time of",
+        eq_js_add_to_cart: "Add Item to Cart",
+        eq_js_booking_summary_title: "Thank you!",
+        eq_js_cart_tt:
+          "Create a shopping cart with these space bookings, and go to equipment booking page to add more items to the cart.",
+        eq_js_close: "Close",
+        eq_js_date: "Change Return Date",
+        eq_js_det_return: "Determining return time",
+        eq_js_from: "From:",
+        eq_js_from_det: "from",
+        eq_js_go_to_date: "Go To Date",
+        eq_js_isRequired: "is required!",
+        eq_js_rem_pending: "Remove Pending Booking",
+        eq_js_spacew_forb_multi:
+          "Forbidden from booking same resource multiple times in a single booking.<br><br>Please only select sequential checkboxes.",
+        eq_js_spacew_forb_single:
+          "Forbidden from booking different resources in a single booking.",
+        eq_js_to: "To:",
+        eq_js_until_det: "until...",
+        eq_start_over: "Make Another Booking",
+        eq_unavail: "Unavailable/Padding",
+        eq_your_book: "Your Booking"
+      };
+    </script>
+    <title>Space Availability - Calendar - UCLA Library</title>
+    <script type="text/javascript" src="/js201/fullcalendar.min.js"></script>
+    <link rel="stylesheet" href="/css201/fullcalendar.min.css" />
+
+    <style>
+      .s-lc-eq-avail,
+      .label-eq-avail,
+      .s-lc-eq-period-available {
+        background-color: #14951f !important;
+        border-color: #14951f !important;
+      }
+
+      .s-lc-eq-avail:hover,
+      .s-lc-eq-period-available:hover {
+        background-color: #095212 !important;
+        border-color: #095212 !important;
+      }
+
+      .s-lc-eq-pending,
+      .label-eq-pending,
+      .s-lc-eq-period-pending {
+        background-color: #f59f16 !important;
+        border-color: #f59f16 !important;
+      }
+
+      .s-lc-eq-checkout,
+      .label-eq-unavailable,
+      .s-lc-eq-period-booked {
+        background-color: #c91908 !important;
+        border-color: #c91908 !important;
+      }
+    </style>
+    <style>
+      .s-lc-location-name {
+        font-size: 32px;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//www.library.ucla.edu/sites/all/themes/uclalib_omega/css/uclalib-omega.styles.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//www.library.ucla.edu/sites/all/themes/uclalib_omega/css/layouts/basic/basic.layout.css"
+    />
+
+    <style type="text/css">
+      @font-face {
+        font-family: "ProximaNova";
+        src: url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Light.eot");
+        src: url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Light.eot?#iefix")
+            format("embedded-opentype"),
+          url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Light.woff")
+            format("woff"),
+          url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Light.ttf")
+            format("truetype");
+        font-weight: 300;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "ProximaNova";
+        src: url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Regular.eot");
+        src: url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Regular.eot?#iefix")
+            format("embedded-opentype"),
+          url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Regular.woff")
+            format("woff"),
+          url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Regular.ttf")
+            format("truetype");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "ProximaNova";
+        src: url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Semibold.eot");
+        src: url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Semibold.eot?#iefix")
+            format("embedded-opentype"),
+          url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Semibold.woff")
+            format("woff"),
+          url("//s3.amazonaws.com/libapps/sites/705/include/ProximaNova-Semibold.ttf")
+            format("truetype");
+        font-weight: 600;
+        font-style: normal;
+      }
+    </style>
+
+    <STYLE type="text/css">
+      /*! selected css from
+      http://www.library.ucla.edu/sites/all/themes/uclalib_omega/css/uclalib-omega.normalize.css
+      */ body { margin: 0; font-size: 14px; color: #666; line-height: initial; }
+      a { background: transparent; } a:active, a:hover { outline: 0; } h1 {
+      font-size: 2em; margin: 0.67em 0; } sub, sup { font-size: 75%;
+      line-height: 0; position: relative; vertical-align: baseline; } sup { top:
+      -0.50em; } sub { bottom: -0.25em; } /*! manually added by SM */ body {
+      line-height: 1.5; } #s-lc-rm-tg-tb th, #s-lc-rm-tg-tb td { padding: 0px;
+      font-size: 12px; border-spacing: 0px; } a { font-weight: 700; } h3 {
+      font-size: 16px; color: #666; font-weight: bold; margin-top: 10px;
+      margin-bottom: 5px; } table th { font-size: 16px; color: #666;
+      font-weight: normal; } .s-lib-box .s-lib-box-title { font-size: 17px;
+      font-weight: 400; } ul,ol { padding-left: 10px; margin-left: 10px; }
+      .s-lg-link-list, .s-lg-system-list, .s-lg-rss-list { padding-left: 10px; }
+      ul ul, ol ul, ul ol, ol ol { margin-bottom: 0px; margin-left: 20px; }
+      .nav-tabs, .nav-pills a { font-size: 15px; font-weight: bold; } .btn-info,
+      .btn-info:hover, .btn-info:focus, .btn-info:active { background-color:
+      #3283BE; border-color: #3283BE; } .label-info { color: #FFFFFF;
+      background-color: #3283BE; font-size: 1.1em !important; }
+      .l-colophon-wrapper { padding: 20px 0; } .page_title { color: #3283BE;
+      font-size: 80%; display: none; } ul.s-lg-link-list {margin-bottom: 0px; }
+      table th th, table td td { text-align: initial; } table th, table td {
+      vertical-align: top; } /* fix reservation time tables */ .lc_rm_b,
+      .lc_rm_u, .lc_rm_a { height: 21px; } .lc_rm_hours { height: 18px; }
+    </STYLE>
+
+    <script>
+      (function(i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        "script",
+        "//www.google-analytics.com/analytics.js",
+        "ga"
+      );
+      ga("create", "UA-32672693-1", "auto");
+      ga("send", "pageview");
+    </script>
+
+    <!-- Add molecule background, gray header, breadcrumb style -->
+    <style>
+      .s-lg-guide-body,
+      .s-lib-public-body {
+        background: url("//www.library.ucla.edu/sites/all/themes/uclalib_omega/images/mol-bg.jpg")
+          repeat scroll 0px 0px transparent;
+        margin: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+      .s-lib-header {
+        padding-left: 10px;
+        padding-right: 10px;
+        background: #eff3f4;
+      }
+      #s-lg-guide-main,
+      #s-lib-public-main,
+      #s-lg-tabs-container {
+        padding-left: 10px;
+        padding-right: 10px;
+        background: #ffffff;
+      }
+      .breadcrumb > li li::before {
+        color: #666;
+        content: "» ";
+      }
+      #s-lc-public-bc .breadcrumb li {
+        font-weight: 400;
+        color: #666;
+        font-size: 14px;
+      }
+      #s-lc-public-bc .breadcrumb a {
+        font-weight: 400;
+      }
+      #s-lg-guide-desc-container {
+        margin-bottom: 10px;
+        padding-top: 0px;
+      }
+      #s-lg-guide-description {
+        font-size: 14px;
+      }
+    </style>
+
+    <style type="text/css">
+      /*! extra padding for table heads */
+      table th {
+        padding: 5px 7px;
+      }
+      /*! change color of info icocn */
+      .fa-info-circle {
+        color: #3283be;
+      }
+    </style>
+
+    <style type="text/css">
+      .s-lc-h-head-date {
+        color: #666666;
+        font-size: 14px;
+      }
+      /*! suppress breadcrumbs */
+      ol.breadcrumb {
+        display: none;
+      }
+    </style>
+
+    <style type="text/css">
+      body {
+        font-family: "ProximaNova", sans-serif;
+      }
+      .dow {
+        color: #ffffff;
+      }
+      .datepicker-switch,
+      .next,
+      .prev {
+        color: #ffffff;
+      }
+      .datepicker-switch:hover,
+      .next:hover,
+      .prev:hover {
+        color: #000000;
+      }
+      #s-lc-rm-tg-h {
+        color: #ffffff;
+      }
+      .ui-datepicker-calendar th {
+        color: #ffffff;
+      }
+      .fa-info-circle {
+        color: #1e4b87;
+      }
+      .s-lc-h-w th {
+        color: #ffffff;
+      }
+      .s-lc-h-head-date {
+        color: inherit;
+      }
+      th.s-lc-h-today-h {
+        color: #000000;
+      }
+      #s-lc-public-skiplink {
+        display: none;
+      }
+    </style>
+
+    <style>
+      @font-face {
+        font-family: "icomoon";
+        src: url("//s3.amazonaws.com/libapps/sites/705/include/icomoon.eot");
+        src: url("//s3.amazonaws.com/libapps/sites/705/include/icomoon.eot#iefix")
+            format("embedded-opentype"),
+          url("//s3.amazonaws.com/libapps/sites/705/include/icomoon.ttf")
+            format("truetype"),
+          url("//s3.amazonaws.com/libapps/sites/705/include/icomoon.woff")
+            format("woff"),
+          url("//s3.amazonaws.com/libapps/sites/705/include/icomoon.svg#icomoon")
+            format("svg");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      [class^="icon-"],
+      [class*=" icon-"] {
+        /* use !important to prevent issues with browser extensions that change fonts */
+        font-family: "icomoon" !important;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .icon-help:before {
+        content: "\e607";
+      }
+    </style>
+  </head>
+  <body id="equip_" class="s-lc-public s-lc-public-page-5">
+    <div class="sr-only" title="Information for Screenreader Users"></div>
+    <a id="s-lc-public-skiplink" class="alert-info" href="#s-lc-public-main"
+      >Skip to Main Content</a
+    >
+
+    <div id="s-lc-public-cust-header" role="banner">
+      <div class="l-header-wrapper">
+        <div class="l-header" role="banner">
+          <div class="l-region l-region--branding">
+            <div class="panel-pane pane-page-logo">
+              <div class="pane-content">
+                <a
+                  href="http://www.library.ucla.edu/"
+                  rel="home"
+                  id="logo"
+                  title="Home"
+                  ><img
+                    src="//www.library.ucla.edu/sites/all/themes/uclalib_omega/logo.svg"
+                    alt="Home"
+                /></a>
+              </div>
+            </div>
+          </div>
+          <div class="l-region l-region--header">
+            <div class="panel-pane pane-block pane-system-user-menu">
+              <div class="pane-content">
+                <ul class="menu">
+                  <li class="first leaf">
+                    <a
+                      href="http://www.library.ucla.edu/use/computers-computing-services/connect-campus"
+                      >Connect from Off-Campus</a
+                    >
+                  </li>
+                  <li><a href="http://www.library.ucla.edu/hours">Hours</a></li>
+                  <li class="last collapsed">
+                    <a href="http://www.library.ucla.edu/contact">Contact</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="panel-pane pane-custom pane-2 pane-ask-a-librarian">
+              <div class="pane-content">
+                <p>
+                  <a
+                    class="btn-ask"
+                    href="http://www.library.ucla.edu/support/research-help"
+                    ><span class="icon-help"></span> Ask a Librarian</a
+                  >
+                </p>
+              </div>
+            </div>
+            <div class="panel-pane pane-search-form">
+              <div class="pane-content">
+                <div class="header-search-form-wrapper">
+                  <form
+                    class="header-search-form"
+                    action="http://www.library.ucla.edu/site-search"
+                    method="get"
+                    accept-charset="UTF-8"
+                  >
+                    <div class="form-wrapper">
+                      <div class="form-item form-type-textfield">
+                        <input
+                          type="text"
+                          class="form-text"
+                          id=""
+                          name="search_query"
+                          value=""
+                          size="30"
+                          maxlength="128"
+                          placeholder="Search"
+                          style="display: none;"
+                        />
+                      </div>
+                      <div class="form-actions">
+                        <input
+                          type="submit"
+                          class="form-submit"
+                          id="submit"
+                          value="Go"
+                          style="visibility: hidden;"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div id="s-lc-public-bc" class="row">
+        <div class="col-md-12">
+          <ol class="breadcrumb">
+            <li><a href="http://www.library.ucla.edu/">UCLA Library</a></li>
+            <li><a href="https://calendar.library.ucla.edu">Calendar</a></li>
+            <li class="active">Space Availability</li>
+          </ol>
+        </div>
+      </div>
+
+      <noscript>
+        <div class="alert alert-danger" id="noscript">
+          Your browser has javascript disabled. Without javascript some
+          functions will not work.
+        </div>
+      </noscript>
+
+      <div id="s-lc-public-main" class="s-lc-public-main">
+        <div id="s-lc-public-page-content" class="row">
+          <div id="col1" class="col-md-12 center">
+            <div id="s-lc-eq-navform">
+              <h1 class="sr-only">Space Availability</h1>
+
+              <form class="form-inline" role="search">
+                <input type="hidden" name="page" id="page" value="1" />
+                <input type="hidden" name="type" id="type" value="2" />
+
+                <div class="form-group form-group-sm">
+                  <label class="hidden-sm" for="lid">Location</label>
+                  <select class="form-control" name="lid" id="lid">
+                    <option value="4361">CLICC Powell</option>
+                    <option value="5567">CLICC YRL</option>
+
+                    <option value="0" selected="selected"
+                      >View All Locations</option
+                    >
+                  </select>
+                </div>
+
+                <div class="form-group form-group-sm">
+                  <label class="hidden-sm" for="capacity">Capacity</label>
+                  <select class="form-control" name="capacity" id="capacity">
+                    <option value="0">For any number of people.</option>
+                    <option value="2">For 5-8 people</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+
+            <div id="time_grid_cont" class="s-lc-spaces-time-grid">
+              <div class="alert alert-warning">
+                Please note, due to the amount of data being loaded, this page
+                can be slow to load. For a faster view, limit your search to a
+                specific Location.
+              </div>
+
+              <div
+                id="s-lc-4361"
+                class="margin-bottom-lg"
+                style="display: none;"
+              >
+                <h1 class="s-lc-location-name">CLICC Powell Spaces</h1>
+
+                <div id="s-lc-time-grid-4361"></div>
+
+                <div class="s-lc-time-grid-legend">
+                  <span
+                    class="label-eq-cont"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Slot is available, click to book!"
+                    ><span class="label label-eq-avail">&nbsp;&nbsp;</span>
+                    Available</span
+                  >
+                  <span
+                    class="label-eq-cont"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Your pending booking."
+                    ><span class="label label-eq-pending">&nbsp;&nbsp;</span>
+                    Your Booking</span
+                  >
+                  <span
+                    class="label-eq-cont"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="This slot is unavailable for starting a new booking. Bookings may occasionally extend into this slot."
+                    ><span class="label label-eq-unavailable"
+                      >&nbsp;&nbsp;</span
+                    >
+                    Unavailable/Padding</span
+                  >
+                </div>
+              </div>
+              <div
+                id="s-lc-5567"
+                class="margin-bottom-lg"
+                style="display: none;"
+              >
+                <h1 class="s-lc-location-name">CLICC YRL Spaces</h1>
+
+                <div id="s-lc-time-grid-5567"></div>
+
+                <div class="s-lc-time-grid-legend">
+                  <span
+                    class="label-eq-cont"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Slot is available, click to book!"
+                    ><span class="label label-eq-avail">&nbsp;&nbsp;</span>
+                    Available</span
+                  >
+                  <span
+                    class="label-eq-cont"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Your pending booking."
+                    ><span class="label label-eq-pending">&nbsp;&nbsp;</span>
+                    Your Booking</span
+                  >
+                  <span
+                    class="label-eq-cont"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="This slot is unavailable for starting a new booking. Bookings may occasionally extend into this slot."
+                    ><span class="label label-eq-unavailable"
+                      >&nbsp;&nbsp;</span
+                    >
+                    Unavailable/Padding</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="s-lc-eq-form-box"
+              style="display: none;"
+              role="region"
+              aria-live="polite"
+            >
+              <form
+                id="s-lc-eq-form-times"
+                class="form-horizontal"
+                role="form"
+                method="post"
+              >
+                <fieldset>
+                  <div id="s-lc-eq-bwell" class="well" tabindex="0">&nbsp;</div>
+                  <div id="s-lc-eq-bform-inner" class="col-sm-offset-5">
+                    <button
+                      class="btn btn-primary"
+                      name="submit_times"
+                      id="submit_times"
+                    >
+                      Submit Times</button
+                    >&nbsp;
+                    <button class="btn btn-default" name="eq_cart" id="eq_cart">
+                      <i
+                        class="fa fa-shopping-cart fa-lg"
+                        aria-hidden="true"
+                      ></i
+                      >&nbsp;&nbsp;Add Equipment
+                    </button>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+
+            <div
+              id="s-lc-eq-form"
+              style="clear:both; display: none;"
+              role="region"
+              aria-live="polite"
+            ></div>
+
+            <div
+              id="s-lc-eq-errors"
+              class="alert alert-danger"
+              style="display: none;"
+              role="region"
+              aria-live="polite"
+            ></div>
+
+            <div
+              id="s-lc-eq-success"
+              style="display: none;"
+              role="region"
+              aria-live="polite"
+            >
+              <h1>Thank you!</h1>
+
+              <div id="s-lc-eq-success-content"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="s-lc-public-footer"
+        class="s-lc-public-footer row"
+        role="contentinfo"
+      >
+        <div id="s-lc-public-footer-brand">
+          <span title="libcal-us-1">Powered by</span>
+          <a href="https://www.springshare.com">Springshare</a>.
+        </div>
+        <div id="s-lc-public-footer-rights">
+          All rights reserved.
+        </div>
+
+        <div id="s-lc-footer-support-link">
+          <a href="mailto:reservations@library.ucla.edu"
+            >Report a tech support issue.</a
+          >
+        </div>
+
+        <div id="s-lc-public-footer-admin-links">
+          <a
+            id="s-lc-sign-in"
+            href="https://ucla.libapps.com/libapps/login.php?site_id=6727&amp;target="
+            >Login to LibApps</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div id="s-lc-public-cust-footer">
+      <div class="l-colophon-wrapper">
+        <div class="l-colophon" role="contentinfo">
+          <div class="l-region l-region--colophon-first">
+            <div
+              class="panel-pane pane-bean-text-block pane-bean-colophon-about"
+            >
+              <div class="pane-content">
+                <div
+                  class="entity entity-bean bean-text-block clearfix"
+                  class="entity entity-bean bean-text-block"
+                >
+                  <div class="content">
+                    <div
+                      class="field field--name-field-text-block field--type-text-long field--label-hidden"
+                    >
+                      <div class="field__items">
+                        <div class="field__item even">
+                          <h2><span>UCLA Library</span></h2>
+                          <p>
+                            The mission of the UCLA Library is to provide access
+                            to and delivery of information resources to UCLA
+                            students, faculty, and staff in support of the
+                            research and instructional mission of the
+                            university. Relying on its highly skilled staff, the
+                            Library encourages innovation, capitalizes on
+                            appropriate technologies, forges effective
+                            partnerships and aggressively promotes excellence.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="l-region l-region--colophon-second">
+            <div class="panel-pane pane-block pane-menu-menu-colophon-first">
+              <div class="pane-content">
+                <ul class="menu">
+                  <li class="first leaf">
+                    <a href="http://www.library.ucla.edu/about" title=""
+                      >About UCLA Library</a
+                    >
+                  </li>
+                  <li class="leaf">
+                    <a
+                      href="http://www.library.ucla.edu/about/about-collections"
+                      title=""
+                      >About the Collections</a
+                    >
+                  </li>
+                  <li class="last leaf">
+                    <a
+                      href="http://www.library.ucla.edu/about/giving-library"
+                      title=""
+                      >Giving to UCLA Library</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="l-region l-region--colophon-third">
+            <div class="panel-pane pane-block pane-menu-menu-colophon-second">
+              <div class="pane-content">
+                <ul class="menu">
+                  <li class="first leaf">
+                    <a
+                      href="http://www.library.ucla.edu/about/employment-human-resources"
+                      title=""
+                      >Employment</a
+                    >
+                  </li>
+                  <li class="leaf">
+                    <a href="http://www.ucla.edu/" title="">UCLA Homepage</a>
+                  </li>
+                  <li class="last leaf">
+                    <a
+                      href="http://www.library.ucla.edu/about/social-media-directory"
+                      title=""
+                      >Social Media Directory</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="l-footer-wrapper">
+        <div class="l-footer" role="contentinfo">
+          <div class="l-region l-region--footer">
+            <div class="panel-pane pane-block pane-menu-menu-footer">
+              <div class="pane-content">
+                <ul class="menu">
+                  <li class="first last leaf">
+                    <span title="" class="footer-copyright nolink"
+                      >2015 © UC Regents</span
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/js201/datepicker.min.js"></script>
+    <link rel="stylesheet" href="/css201/datepicker.min.css" />
+
+    <script>
+      var pendingRoomBookings = [];
+      var pendingBookingNextId = 1;
+      var pendingBookingsBlowAwayCart = false;
+
+      function addError(msg, id) {
+        jQuery(".s-lc-eq-" + id)
+          .addClass("has-error")
+          .find(".form-control")
+          .attr("aria-invalid", true);
+        jQuery(".s-lc-eq-" + id)
+          .find(".s-lc-eq-flab")
+          .append('<div class="error-message">' + msg + "</div>");
+        jQuery("#" + id).focus();
+        return false;
+      }
+
+      function removeErrors() {
+        jQuery(".s-lc-eq-q")
+          .removeClass("has-error")
+          .find(".error-message")
+          .remove();
+      }
+
+      function agreeToTermsAndConditions() {
+        jQuery("#bform-terms-container").hide();
+
+        // sometimes we need to check the patron's email before showing the booking form
+        var emailRestrictionCheck = jQuery("#s-lc-booking-restriction-check");
+        if (emailRestrictionCheck.length > 0) {
+          emailRestrictionCheck.show();
+          return false;
+        }
+
+        // other times we jump directly to the booking form
+        jQuery("#bform-form-container").show();
+
+        // focus on the booking form help text
+        jQuery("#s-lc-bform-help").focus();
+
+        return false;
+      }
+
+      var locationIsUsingLibAuth = false;
+
+      jQuery(function() {
+        jQuery("#lid").on("change", function() {
+          var lid = parseInt(jQuery("#lid").val(), 10);
+          if (lid) {
+            window.location = "/spaces?lid=" + lid;
+          } else {
+            window.location = "/allspaces";
+          }
+        });
+
+        jQuery("#gid").on("change", function() {
+          var l = jQuery("#lid").val();
+          var g = jQuery("#gid").val();
+          window.location = "/spaces?lid=" + l + "&gid=" + g;
+        });
+
+        jQuery("#s-lc-eq-form-times").on("submit", function() {
+          if (locationIsUsingLibAuth) {
+            return submitPendingRoomBookings_LibAuth();
+          } else {
+            return submitPendingTimes();
+          }
+        });
+
+        jQuery("#eq_cart").on("click", makeCartAndGoToEquipPage);
+      });
+
+      function customFormValidation() {
+        // exists to be overwritten by the specific group validation function
+      }
+
+      function submitPendingRoomBookings(forcedEmail) {
+        removeErrors();
+        jQuery("#s-lc-eq-errors").hide();
+
+        // check any required text fields are set
+        var anyEmpty = false;
+        var bookingForm = jQuery("#s-lc-eq-bform");
+        bookingForm.find(".notempty").each(function() {
+          if (jQuery.trim(jQuery(this).val()) == "") {
+            addError(springLang.eq_js_isRequired, this.name);
+            anyEmpty = true;
+          }
+        });
+
+        // check any required checkbox groups have values checked
+        bookingForm.find(".requirechecked").each(function() {
+          if (jQuery(this).find("input[type=checkbox]:checked").length == 0) {
+            var parentLabelName = jQuery(this).data("id");
+            addError(springLang.eq_js_isRequired, parentLabelName);
+            anyEmpty = true;
+          }
+        });
+
+        if (anyEmpty) {
+          return false;
+        }
+
+        if (!customFormValidation()) {
+          return false;
+        }
+
+        var payload = {
+          formData: jQuery("#s-lc-eq-bform").serializeJSON(),
+          forcedEmail: forcedEmail,
+          bookings: preparePendingBookingsPayload(),
+          returnUrl: window.location.pathname
+        };
+
+        pageBusyBegin("#btn-form-submit");
+
+        jQuery
+          .ajax({
+            type: "post",
+            url: "/ajax/space/book",
+            data: payload,
+            dataType: "json"
+          })
+          .always(function(data) {
+            pageBusyEnd("#btn-form-submit");
+          })
+          .done(function(data) {
+            if (data.error) {
+              jQuery("#s-lc-eq-errors")
+                .html(data.error)
+                .show();
+              return;
+            }
+
+            jQuery(
+              "#s-lc-eq-form, #s-lc-eq-navform, #s-lc-group-description, #s-lc-eq-form-box, #time_grid_cont"
+            ).hide();
+            jQuery("#s-lc-eq-success-content").html(data.html);
+            jQuery("#s-lc-eq-success")
+              .show()
+              .focus();
+          })
+          .fail(ajaxErrorHandler);
+
+        return false;
+      }
+
+      function submitPendingTimes() {
+        var payload = {
+          bookings: preparePendingBookingsPayload()
+        };
+
+        pageBusyBegin("#submit_times");
+
+        jQuery
+          .ajax({
+            type: "post",
+            url: "/ajax/space/times",
+            data: payload,
+            dataType: "json"
+          })
+          .always(function(data) {
+            pageBusyEnd("#submit_times");
+          })
+          .done(function(data) {
+            if (data.error) {
+              errorAlert(data.error);
+              return;
+            }
+
+            // hide a bunch of stuff
+            jQuery(
+              "#s-lc-eq-navform, #s-lc-group-description, #s-lc-eq-form-box, #time_grid_cont"
+            ).hide();
+
+            // setup booking form + terms html
+            jQuery("#s-lc-eq-form")
+              .html(data.html)
+              .show();
+          })
+          .fail(ajaxErrorHandler);
+
+        return false;
+      }
+
+      function submitPendingRoomBookings_LibAuth() {
+        var payload = {
+          libAuth: true,
+          blowAwayCart: true,
+          bookings: preparePendingBookingsPayload()
+        };
+
+        workingAlert();
+
+        jQuery
+          .ajax({
+            type: "post",
+            url: "/ajax/space/createcart",
+            data: payload,
+            dataType: "json"
+          })
+          .always(function(data) {
+            stopAlert();
+          })
+          .done(function(data) {
+            if (data.success) {
+              // redirect to libauth checkout page
+              window.location = data.redirect;
+            } else {
+              jQuery("#s-lc-eq-errors")
+                .html(data.error)
+                .show();
+            }
+          })
+          .fail(ajaxErrorHandler);
+
+        return false;
+      }
+
+      function makeCartAndGoToEquipPage() {
+        // we only allow user to do this if all the room bookings start at the same time
+        if (pendingRoomBookings.length > 1) {
+          var startTime = pendingRoomBookings[0].start;
+          for (var i = 1; i < pendingRoomBookings.length; i++) {
+            var bookingInfo = pendingRoomBookings[i];
+            if (!bookingInfo.start.isSame(startTime)) {
+              errorAlert(
+                "You can only create an Equipment Cart if all your room bookings begin at the same time."
+              );
+              return false;
+            }
+          }
+        }
+
+        var payload = {
+          blowAwayCart: pendingBookingsBlowAwayCart,
+          bookings: preparePendingBookingsPayload()
+        };
+
+        workingAlert();
+
+        jQuery
+          .ajax({
+            type: "post",
+            url: "/ajax/space/createcart",
+            data: payload,
+            dataType: "json"
+          })
+          .always(function(data) {
+            stopAlert();
+          })
+          .done(function(data) {
+            if (data.success) {
+              // redirect to new page
+              window.location = data.redirect;
+            } else if (data.hasItems) {
+              errorAlert(
+                "Cart already has items in it. If you click the shopping cart again, the existing items in the cart will be replaced by the selected rooms."
+              );
+              pendingBookingsBlowAwayCart = true;
+            } else {
+              errorAlert(data.error);
+            }
+          })
+          .fail(ajaxErrorHandler);
+
+        return false;
+      }
+
+      function changeBookingTimes() {
+        // show the old form box + availability grid
+        jQuery(
+          "#s-lc-eq-navform, #s-lc-group-description, #s-lc-eq-form-box, #time_grid_cont"
+        ).show();
+
+        // hide the terms + booking form
+        jQuery("#s-lc-eq-form").hide();
+      }
+
+      function doEventsContainAnyAvailabileSlots(events) {
+        for (var i = 0; i < events.length; i++) {
+          if (events[i].className === "s-lc-eq-avail") {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      function onClickViewMoreInfo() {
+        var itemId = jQuery(this).data("eid");
+
+        return ajaxModal(
+          "/equipment/item/" + itemId + "/info",
+          springSpace.modalSizeMedium
+        );
+      }
+
+      function onRenderSpaceResource(resource, element) {
+        var html = "";
+
+        if (resource.hasInfo) {
+          html +=
+            '<a href="#" class="s-lc-item-more-info" data-eid="' +
+            resource.eid +
+            '"><span class="s-lc-info-label">Info</span><span class="icon-label sr-only">Click\u0020for\u0020more\u0020info\u0020about ' +
+            resource.title +
+            "</span></a>";
+        }
+
+        if (resource.url !== undefined) {
+          html +=
+            '<a href="' +
+            resource.url +
+            '"><span class="fc-cell-text">' +
+            resource.title +
+            "</span></a>";
+        } else {
+          html += '<span class="fc-cell-text">' + resource.title + "</span>";
+        }
+
+        element.html(html);
+      }
+    </script>
+
+    <script>
+      var pendingBookingsLimitIssues = null;
+      var dateFormatStartTimeDict = "MMDDHHmm";
+      var dateFormatDayOfYear = "YYYY-MM-DD";
+
+      var issueTypeAdditionalText = {
+        duration: " minutes",
+        frequency: " bookings"
+      };
+
+      var frequencyDisplayStrings = {
+        d: " per\u0020day",
+        w: " per\u0020week",
+        m: " per\u0020month",
+        y: " per\u0020year",
+        t: " at\u0020a\u0020time"
+      };
+
+      function pendingRoomBookingsAreNowEmpty() {
+        jQuery("#s-lc-eq-form-box").hide();
+      }
+
+      function renderPendingRoomBookings() {
+        // ensure all tooltips are hidden
+        jQuery(".tooltip").hide();
+
+        if (pendingRoomBookings.length == 0) {
+          pendingRoomBookingsAreNowEmpty();
+          return;
+        }
+
+        // refresh the shown cart items
+        // format the room data as html
+        var html = "<div>";
+        var dateTimeFormat = springSpace.getDateTimeFormat();
+        var totalCost = 0;
+
+        for (var i = 0; i < pendingRoomBookings.length; i++) {
+          var bookingInfo = pendingRoomBookings[i];
+          var bookingCost = bookingInfo.cost;
+          var resourceName = resourceNameIdMap["eid_" + bookingInfo.eid];
+
+          html +=
+            '<div class="form-group s-lc-pending-booking" id="pending_booking_' +
+            bookingInfo.id +
+            '">';
+          html +=
+            '   <label class="col-md-5 control-label" for="bookingend_' +
+            bookingInfo.id +
+            '"><strong>' +
+            resourceName +
+            "</strong>: " +
+            bookingInfo.start.format(dateTimeFormat) +
+            " " +
+            springLang.eq_js_until_det +
+            "</label>";
+          html += '   <div class="col-md-3">';
+          html +=
+            '           <select id="bookingend_' +
+            bookingInfo.id +
+            '" name="bookingend_' +
+            bookingInfo.id +
+            '" data-booking="' +
+            bookingInfo.id +
+            '" class="form-control input-sm b-end-date">';
+
+          for (
+            var selectionIndex = 0;
+            selectionIndex < bookingInfo.options.length;
+            selectionIndex++
+          ) {
+            var selected =
+              bookingInfo.optionSelected == selectionIndex
+                ? 'selected="selected"'
+                : "";
+            var value = bookingInfo.options[selectionIndex];
+            var name = moment(value).format(dateTimeFormat);
+            html +=
+              '               <option value="' +
+              value +
+              '" ' +
+              selected +
+              ">" +
+              name +
+              "</option>";
+          }
+
+          html += "           </select>";
+          html += "       </div>";
+          html += '       <div class="col-md-1">';
+          html +=
+            '           <button type="button" class="btn btn-default btn-sm" onclick="return removePendingBooking(' +
+            bookingInfo.id +
+            "," +
+            bookingInfo.lid +
+            ');"><i class="fa fa-trash-o" aria-hidden="true"></i><span class="sr-only">' +
+            springLang.eq_js_rem_pending +
+            "</span></button>";
+          html += "       </div>";
+          if (bookingCost > 0) {
+            var costDisplay = springSpace.formatCurrency(bookingCost);
+            var costPreview = "\u007Bamount\u007D"
+              .replace("\u007Bamount\u007D", costDisplay)
+              .replace("\u007Brate\u007D", "");
+            html +=
+              '<label class="col-md-3 control-label s-lc-billing-cost-single">' +
+              costPreview +
+              "</label>";
+          }
+          html += "   </div>";
+          html += "   </div>";
+          html += "</div>";
+
+          totalCost += bookingCost;
+        }
+
+        var bookingDurationOkay = true;
+        if (pendingBookingsLimitIssues) {
+          bookingDurationOkay = false;
+          pendingBookingsLimitIssues.forEach(function(issueDetails) {
+            var limitDisplay =
+              issueDetails.allowed +
+              issueTypeAdditionalText[issueDetails.type] +
+              frequencyDisplayStrings[issueDetails.frequency];
+            var usedDisplay =
+              issueDetails.used + issueTypeAdditionalText[issueDetails.type];
+            var issueHtml =
+              "<strong>" +
+              issueDetails.group +
+              "</strong>: Sorry, you can only reserve " +
+              limitDisplay +
+              ", and you currently have " +
+              usedDisplay +
+              ". Please adjust your booking.";
+
+            html +=
+              '\
+                    <div class="form-group">\
+                        <div class="col-md-offset-1 col-md-10">\
+                            <div class="alert alert-warning">' +
+              issueHtml +
+              "</div>\
+                        </div>\
+                    </div>";
+          });
+        }
+
+        if (totalCost > 0) {
+          html +=
+            '\
+                <div class="form-group s-lc-pending-booking">\
+                    <label class="col-md-5 control-label">Total\u0020cost\u0020for\u0020this\u0020reservation\u003A</label>\
+                    <label class="col-md-5 control-label s-lc-billing-cost-total">' +
+            springSpace.formatCurrency(totalCost) +
+            "</label>\
+                </div>";
+        }
+
+        html += "</div>";
+
+        // show the booking form box which contains the booking well, the terms + conditions and the booking form
+        jQuery("#s-lc-eq-form-box").show();
+
+        // put the item in the displayed cart + set the window focus to the cart
+        var roomCart = jQuery("#s-lc-eq-bwell");
+        roomCart.empty();
+        roomCart.html(html);
+        roomCart.focus();
+
+        // disable the add equipment and form submission buttons until the times are okay
+        jQuery("#submit_times, #eq_cart").prop(
+          "disabled",
+          !bookingDurationOkay
+        );
+
+        // setup delete icon tooltips
+        accessibleIcons();
+
+        // make the tooltip for the cart icon
+        jQuery("#eq_cart").tooltip({
+          title: springLang.eq_js_cart_tt,
+          html: true,
+          container: "body"
+        });
+
+        jQuery(".b-end-date").on("change", updatePendingBookingDuration);
+      }
+
+      function preparePendingBookingsPayload() {
+        var payload = [];
+        for (var i = 0; i < pendingRoomBookings.length; i++) {
+          var bookingInfo = pendingRoomBookings[i];
+          var end = moment(jQuery("#bookingend_" + bookingInfo.id).val());
+          payload.push({
+            id: bookingInfo.id,
+            eid: bookingInfo.eid,
+            gid: bookingInfo.gid,
+            lid: bookingInfo.lid,
+            start: bookingInfo.start.format(springSpace.phpDateTimeFormat),
+            end: end.format(springSpace.phpDateTimeFormat)
+          });
+        }
+        return payload;
+      }
+
+      function pendingRoomBookingsUpdateListAndAvailability(payload) {
+        // if we are adding rooms, we might need to hide the previous booking success message
+        jQuery("#s-lc-eq-success").hide();
+
+        workingAlert();
+
+        // find out booking information
+        jQuery
+          .ajax({
+            type: "post",
+            url: "/spaces/availability/booking/add",
+            data: payload,
+            dataType: "json"
+          })
+          .always(stopAlert)
+          .done(function(data) {
+            if (data.error) {
+              errorAlert(data.error);
+              return;
+            }
+
+            // success! the entire pending bookings array can be re-created now
+            pendingRoomBookings = [];
+            pendingBookingsLimitIssues = data.limitIssues;
+
+            for (var i = 0; i < data.bookings.length; i++) {
+              var booking = data.bookings[i];
+
+              pendingRoomBookings.push({
+                id: booking.id,
+                eid: booking.eid,
+                gid: booking.gid,
+                lid: booking.lid,
+                cost: booking.cost,
+
+                name: booking.name,
+                start: moment(booking.start),
+
+                options: booking.options,
+                optionSelected: booking.optionSelected
+              });
+            }
+
+            // this request might have came back with updated grid data
+            // if it did not - refresh the whole grid
+            if (data.gridUpdateData) {
+              updateGridEventsForItem(data.gridUpdateData);
+            } else if (time_grid) {
+              time_grid.fullCalendar("refetchEvents", pendingRoomBookings);
+            }
+
+            renderPendingRoomBookings();
+          })
+          .fail(ajaxErrorHandler);
+
+        return false;
+      }
+
+      function createStartTimeToClassMap(gridData) {
+        var startTimeToClassMap = {};
+
+        gridData.forEach(function(gridElement) {
+          var startMoment = moment(gridElement.start);
+          startTimeToClassMap[startMoment.format(dateFormatStartTimeDict)] = [
+            gridElement.className
+          ];
+        });
+
+        return startTimeToClassMap;
+      }
+
+      function updateGridEventsForItem(gridUpdateData) {
+        var changedItemId = gridUpdateData.itemId;
+        var changedRangeStart = moment(
+          gridUpdateData.dateStart,
+          springSpace.phpDateTimeFormat
+        );
+        var changedRangeEnd = moment(
+          gridUpdateData.dateEnd,
+          springSpace.phpDateTimeFormat
+        );
+        var startTimeToClassMap = createStartTimeToClassMap(
+          gridUpdateData.gridData
+        );
+
+        var clientEvents = time_grid.fullCalendar("clientEvents", function(
+          clientEvent
+        ) {
+          if (clientEvent.itemId != changedItemId) {
+            return false;
+          }
+
+          // we have to use the clientEvent.start.format logic here because of issues encountered
+          // when trying to use a fullcalendar moments directly
+          var clientEventStart = moment(
+            clientEvent.start.format(springSpace.phpDateTimeFormat)
+          );
+
+          // if this event is before the day of events that was changed - forget it
+          if (clientEventStart.isBefore(changedRangeStart)) {
+            return false;
+          }
+
+          // we only want to process events that start before the changed range "end"
+          return clientEventStart.isBefore(changedRangeEnd);
+        });
+
+        clientEvents.forEach(function(clientEvent) {
+          var startKey = clientEvent.start.format(dateFormatStartTimeDict);
+          if (startKey in startTimeToClassMap) {
+            // this slot is unavailable
+            clientEvent.className = startTimeToClassMap[startKey];
+            clientEvent.status = 1;
+          } else {
+            // this slot is available
+            clientEvent.className = ["s-lc-eq-avail"];
+            clientEvent.status = 0;
+          }
+        });
+
+        time_grid.fullCalendar("updateEvents", clientEvents);
+      }
+
+      function timeGridClickedOnAvailableRoom(calEvent) {
+        var resource = tgFindResource(time_grid, calEvent.resourceId);
+        var view = time_grid.fullCalendar("getView");
+
+        var payload = {
+          add: {
+            id: pendingBookingNextId++,
+            eid: resource.eid,
+            gid: resource.gid,
+            lid: resource.lid,
+            start: calEvent.start.format(springSpace.phpDateTimeFormat)
+          },
+          lid: resource.lid,
+          start: view.start.format(dateFormatDayOfYear),
+          end: view.end.format(dateFormatDayOfYear),
+          bookings: preparePendingBookingsPayload()
+        };
+
+        return pendingRoomBookingsUpdateListAndAvailability(payload);
+      }
+
+      function updatePendingBookingDuration(event) {
+        var view = time_grid.fullCalendar("getView");
+        var changedBooking = jQuery(this);
+
+        var payload = {
+          update: {
+            id: changedBooking.data("booking"),
+            end: changedBooking.val()
+          },
+          lid: locationIdInFocus,
+          start: view.start.format(dateFormatDayOfYear),
+          end: view.end.format(dateFormatDayOfYear),
+          bookings: preparePendingBookingsPayload()
+        };
+
+        return pendingRoomBookingsUpdateListAndAvailability(payload);
+      }
+
+      function removePendingBooking(pendingId, locationId) {
+        var view = time_grid.fullCalendar("getView");
+
+        var payload = {
+          removeId: pendingId,
+          lid: locationIdInFocus,
+          start: view.start.format(dateFormatDayOfYear),
+          end: view.end.format(dateFormatDayOfYear),
+          bookings: preparePendingBookingsPayload()
+        };
+
+        return pendingRoomBookingsUpdateListAndAvailability(payload);
+      }
+
+      function setTimegridCellTitle(calEvent, element) {
+        var dateString = moment(calEvent.start).format(
+          springSpace.getDateTimeFormat()
+        );
+        element
+          .find(".fc-title")
+          .html('<span class="sr-only">' + dateString + "</span>");
+
+        var resourceName = resourceNameIdMap[calEvent.resourceId];
+        var title = dateString + " - " + resourceName;
+        if (calEvent.status == -1) {
+          // AvailabilityUtil::PUBLICSTATUS_UNAVAILABLE
+          title += " - " + springLang.eq_unavail;
+        } else if (calEvent.status == -2) {
+          // AvailabilityUtil::PUBLICSTATUS_PENDING
+          title += " - " + springLang.eq_your_book;
+        }
+        element.prop("title", title);
+      }
+
+      function formatEventsForFullCalendar(events) {
+        events.forEach(function(eventData) {
+          eventData.resourceId = "eid_" + eventData.itemId;
+
+          if (eventData.className) {
+            // this slot is unavailable
+            eventData.status = 1;
+          } else {
+            // this slot is available
+            eventData.className = "s-lc-eq-avail";
+            eventData.status = 0;
+          }
+        });
+
+        return events;
+      }
+
+      function timeGridRoomFetchEventsForTimePeriod(
+        start,
+        end,
+        timezone,
+        callback,
+        lid,
+        gid,
+        eid
+      ) {
+        jQuery
+          .ajax({
+            type: "post",
+            url: "/spaces/availability/grid",
+            data: {
+              lid: lid,
+              gid: gid,
+              eid: eid,
+              start: start.format(dateFormatDayOfYear),
+              end: end.format(dateFormatDayOfYear),
+              bookings: preparePendingBookingsPayload()
+            },
+            dataType: "json"
+          })
+          .done(function(events) {
+            callback(formatEventsForFullCalendar(events));
+
+            var hasAvailability = doEventsContainAnyAvailabileSlots(events);
+
+            jQuery(
+              "#s-lc-time-grid-" + lid + " .fc-goToNextAvailable-button"
+            ).toggle(!hasAvailability);
+          })
+          .fail(ajaxErrorHandler);
+      }
+    </script>
+
+    <script>
+      var time_grid = null;
+      var timeGridLidMap = {};
+      var wantAlternatingBackground = true;
+      var fixedSlotWidth = null;
+
+      function setupTimeGrid_4361() {
+        timeGridLidMap[4361] = jQuery("#s-lc-time-grid-4361").fullCalendar({
+          schedulerLicenseKey: "0240091083-fcs-1547647901",
+          now: "2019-05-25T14:10:41-07:00",
+          nowIndicator: true,
+          scrollTime: "14:00:00",
+          lazyFetching: false,
+          slotWidth: fixedSlotWidth,
+          height: "auto",
+          customButtons: {
+            goToNextAvailable: {
+              text: "Next\u0020Available",
+              click: function() {
+                return timeGridOnClickGoToNextAvailable(
+                  timeGridLidMap[4361],
+                  jQuery(this),
+                  4361,
+                  -1,
+                  -1,
+                  false
+                );
+              }
+            },
+            goToDate: {
+              text: "Go\u0020To\u0020Date"
+            }
+          },
+          header: {
+            left: "title goToDate prev,next goToNextAvailable",
+            center: "",
+            right: ""
+          },
+          loading: function(isLoading, view) {
+            if (isLoading && wantAlternatingBackground) {
+              timegridAlternateHeaderBackgrounds();
+            }
+
+            jQuery("#s-lc-timegrid-loading").toggle(isLoading);
+          },
+          eventClick: function(calEvent, jsEvent, view) {
+            if (calEvent.status == 0) {
+              timeGridClickedOnAvailableRoom_AllLocations(4361, calEvent);
+            }
+            jsEvent.preventDefault();
+          },
+          eventRender: setTimegridCellTitle,
+          eventAfterAllRender: function(view) {
+            jQuery(".s-lc-eq-avail").each(function() {
+              jQuery(this).attr("href", "#");
+            });
+
+            jQuery(".s-lc-item-more-info")
+              .off("click")
+              .on("click", onClickViewMoreInfo);
+          },
+          resourceAreaWidth: "33%",
+          resourceColumns: [
+            {
+              labelText: "Spaces",
+              field: "title",
+              render: onRenderSpaceResource
+            }
+          ],
+          resources: function(callback) {
+            var resources = spacesGetResourcesMatchingCapacity(4361);
+            callback(resources);
+
+            // show or hide the grid depending on if we have any resources or not
+            jQuery("#s-lc-4361").toggle(resources.length > 0);
+          },
+          resourceGroupField: "grouping",
+          refetchResourcesOnNavigate: false,
+          eventOverlap: false,
+          displayEventTime: false,
+          defaultView: "timelineHourlyShort",
+
+          titleFormat: springSpace.dateFormat,
+          views: {
+            timelineSingleDay: {
+              type: "timeline",
+              buttonText: "Day View",
+              slotDuration: "01:00",
+              duration: { days: 1 },
+              dayOfMonthFormat: springSpace.dateFormat,
+              slotLabelFormat: springSpace.timeFormat
+            },
+            timelineHourlyShort: {
+              type: "timeline",
+              slotDuration: "01:00",
+              duration: { days: 3 },
+              dayOfMonthFormat: springSpace.dateFormat,
+              slotLabelFormat: [springSpace.dateFormat, springSpace.timeFormat]
+            },
+            timelineHourlyLong: {
+              type: "timeline",
+              slotDuration: "01:00",
+              duration: { days: 7 },
+              dayOfMonthFormat: springSpace.dateFormat,
+              slotLabelFormat: [springSpace.dateFormat, springSpace.timeFormat]
+            },
+            timelineDailyLong: {
+              type: "timeline",
+              slotDuration: "24:00",
+              duration: { days: 28 }
+            },
+            weekly: {
+              type: "agenda",
+              buttonText: "Week View",
+              duration: { days: 7 },
+              dayOfMonthFormat: springSpace.dateShortFormat,
+              slotDuration: "01:00",
+              slotLabelFormat: [
+                springSpace.dateShortFormat,
+                springSpace.timeFormat
+              ]
+            }
+          },
+          events: function(start, end, timezone, callback) {
+            return timeGridRoomFetchEventsForTimePeriod(
+              start,
+              end,
+              timezone,
+              callback,
+              4361,
+              0,
+              -1
+            );
+          }
+        });
+      }
+      function setupTimeGrid_5567() {
+        timeGridLidMap[5567] = jQuery("#s-lc-time-grid-5567").fullCalendar({
+          schedulerLicenseKey: "0240091083-fcs-1547647901",
+          now: "2019-05-25T14:10:41-07:00",
+          nowIndicator: true,
+          scrollTime: "14:00:00",
+          lazyFetching: false,
+          slotWidth: fixedSlotWidth,
+          height: "auto",
+          customButtons: {
+            goToNextAvailable: {
+              text: "Next\u0020Available",
+              click: function() {
+                return timeGridOnClickGoToNextAvailable(
+                  timeGridLidMap[5567],
+                  jQuery(this),
+                  5567,
+                  -1,
+                  -1,
+                  false
+                );
+              }
+            },
+            goToDate: {
+              text: "Go\u0020To\u0020Date"
+            }
+          },
+          header: {
+            left: "title goToDate prev,next goToNextAvailable",
+            center: "",
+            right: ""
+          },
+          loading: function(isLoading, view) {
+            if (isLoading && wantAlternatingBackground) {
+              timegridAlternateHeaderBackgrounds();
+            }
+
+            jQuery("#s-lc-timegrid-loading").toggle(isLoading);
+          },
+          eventClick: function(calEvent, jsEvent, view) {
+            if (calEvent.status == 0) {
+              timeGridClickedOnAvailableRoom_AllLocations(5567, calEvent);
+            }
+            jsEvent.preventDefault();
+          },
+          eventRender: setTimegridCellTitle,
+          eventAfterAllRender: function(view) {
+            jQuery(".s-lc-eq-avail").each(function() {
+              jQuery(this).attr("href", "#");
+            });
+
+            jQuery(".s-lc-item-more-info")
+              .off("click")
+              .on("click", onClickViewMoreInfo);
+          },
+          resourceAreaWidth: "33%",
+          resourceColumns: [
+            {
+              labelText: "Spaces",
+              field: "title",
+              render: onRenderSpaceResource
+            }
+          ],
+          resources: function(callback) {
+            var resources = spacesGetResourcesMatchingCapacity(5567);
+            callback(resources);
+
+            // show or hide the grid depending on if we have any resources or not
+            jQuery("#s-lc-5567").toggle(resources.length > 0);
+          },
+          resourceGroupField: "grouping",
+          refetchResourcesOnNavigate: false,
+          eventOverlap: false,
+          displayEventTime: false,
+          defaultView: "timelineHourlyShort",
+
+          titleFormat: springSpace.dateFormat,
+          views: {
+            timelineSingleDay: {
+              type: "timeline",
+              buttonText: "Day View",
+              slotDuration: "01:00",
+              duration: { days: 1 },
+              dayOfMonthFormat: springSpace.dateFormat,
+              slotLabelFormat: springSpace.timeFormat
+            },
+            timelineHourlyShort: {
+              type: "timeline",
+              slotDuration: "01:00",
+              duration: { days: 3 },
+              dayOfMonthFormat: springSpace.dateFormat,
+              slotLabelFormat: [springSpace.dateFormat, springSpace.timeFormat]
+            },
+            timelineHourlyLong: {
+              type: "timeline",
+              slotDuration: "01:00",
+              duration: { days: 7 },
+              dayOfMonthFormat: springSpace.dateFormat,
+              slotLabelFormat: [springSpace.dateFormat, springSpace.timeFormat]
+            },
+            timelineDailyLong: {
+              type: "timeline",
+              slotDuration: "24:00",
+              duration: { days: 28 }
+            },
+            weekly: {
+              type: "agenda",
+              buttonText: "Week View",
+              duration: { days: 7 },
+              dayOfMonthFormat: springSpace.dateShortFormat,
+              slotDuration: "01:00",
+              slotLabelFormat: [
+                springSpace.dateShortFormat,
+                springSpace.timeFormat
+              ]
+            }
+          },
+          events: function(start, end, timezone, callback) {
+            return timeGridRoomFetchEventsForTimePeriod(
+              start,
+              end,
+              timezone,
+              callback,
+              5567,
+              0,
+              -1
+            );
+          }
+        });
+      }
+
+      function postTimeGridCreation() {
+        jQuery(".fc-button").each(function() {
+          jQuery(this)
+            .addClass("btn btn-default")
+            .removeClass(
+              "fc-button fc-state-default fc-corner-left fc-corner-right fc-button-next fc-button-prev"
+            );
+        });
+
+        jQuery(".fc-goToDate-button").html(
+          '<i class="fa fa-calendar" aria-hidden="true"></i> Go\u0020To\u0020Date'
+        );
+
+        jQuery(".fc-resource-area .fc-widget-header .fc-cell-text:first").html(
+          '<span class="sr-only">Info</span>'
+        );
+        jQuery(".fc-icon-left-single-arrow").html(
+          '<span class="sr-only">Previous</span>'
+        );
+        jQuery(".fc-icon-right-single-arrow").html(
+          '<span class="sr-only">Next</span>'
+        );
+      }
+
+      var resourcesLocationIdMap = [];
+      var resourceNameIdMap = [];
+      var resources = [];
+      resources.push({
+        id: "eid_29694",
+        title: "Powell\u0020Group\u0020Study\u0020Room\u0020A (Capacity 8)",
+        url: "/space/29694",
+        eid: 29694,
+        gid: 7748,
+        lid: 4361,
+        grouping: "Powell\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29694"] =
+        "Powell\u0020Group\u0020Study\u0020Room\u0020A";
+      resources.push({
+        id: "eid_29695",
+        title: "Powell\u0020Group\u0020Study\u0020Room\u0020B (Capacity 8)",
+        url: "/space/29695",
+        eid: 29695,
+        gid: 7748,
+        lid: 4361,
+        grouping: "Powell\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29695"] =
+        "Powell\u0020Group\u0020Study\u0020Room\u0020B";
+      resources.push({
+        id: "eid_29696",
+        title: "Powell\u0020Group\u0020Study\u0020Room\u0020C (Capacity 8)",
+        url: "/space/29696",
+        eid: 29696,
+        gid: 7748,
+        lid: 4361,
+        grouping: "Powell\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29696"] =
+        "Powell\u0020Group\u0020Study\u0020Room\u0020C";
+      resources.push({
+        id: "eid_29697",
+        title: "Powell\u0020Group\u0020Study\u0020Room\u0020D (Capacity 8)",
+        url: "/space/29697",
+        eid: 29697,
+        gid: 7748,
+        lid: 4361,
+        grouping: "Powell\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29697"] =
+        "Powell\u0020Group\u0020Study\u0020Room\u0020D";
+      resources.push({
+        id: "eid_29698",
+        title: "Powell\u0020Group\u0020Study\u0020Room\u0020E (Capacity 8)",
+        url: "/space/29698",
+        eid: 29698,
+        gid: 7748,
+        lid: 4361,
+        grouping: "Powell\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29698"] =
+        "Powell\u0020Group\u0020Study\u0020Room\u0020E";
+      resources.push({
+        id: "eid_29699",
+        title: "Powell\u0020Group\u0020Study\u0020Room\u0020F (Capacity 8)",
+        url: "/space/29699",
+        eid: 29699,
+        gid: 7748,
+        lid: 4361,
+        grouping: "Powell\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29699"] =
+        "Powell\u0020Group\u0020Study\u0020Room\u0020F";
+      resourcesLocationIdMap[4361] = resources;
+      var resources = [];
+      resources.push({
+        id: "eid_29719",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R01 (Capacity 6)",
+        url: "/space/29719",
+        eid: 29719,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29719"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R01";
+      resources.push({
+        id: "eid_29720",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R02 (Capacity 6)",
+        url: "/space/29720",
+        eid: 29720,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29720"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R02";
+      resources.push({
+        id: "eid_29721",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R03 (Capacity 6)",
+        url: "/space/29721",
+        eid: 29721,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29721"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R03";
+      resources.push({
+        id: "eid_29722",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R04 (Capacity 6)",
+        url: "/space/29722",
+        eid: 29722,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29722"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R04";
+      resources.push({
+        id: "eid_29723",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R05 (Capacity 6)",
+        url: "/space/29723",
+        eid: 29723,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29723"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R05";
+      resources.push({
+        id: "eid_29724",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R06 (Capacity 6)",
+        url: "/space/29724",
+        eid: 29724,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29724"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R06";
+      resources.push({
+        id: "eid_29725",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R07 (Capacity 6)",
+        url: "/space/29725",
+        eid: 29725,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29725"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R07";
+      resources.push({
+        id: "eid_29726",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R08 (Capacity 6)",
+        url: "/space/29726",
+        eid: 29726,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29726"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R08";
+      resources.push({
+        id: "eid_29727",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R09 (Capacity 6)",
+        url: "/space/29727",
+        eid: 29727,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29727"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R09";
+      resources.push({
+        id: "eid_29728",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R10 (Capacity 6)",
+        url: "/space/29728",
+        eid: 29728,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29728"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R10";
+      resources.push({
+        id: "eid_29729",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R11 (Capacity 6)",
+        url: "/space/29729",
+        eid: 29729,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29729"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R11";
+      resources.push({
+        id: "eid_29730",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R12 (Capacity 6)",
+        url: "/space/29730",
+        eid: 29730,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29730"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R12";
+      resources.push({
+        id: "eid_29731",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R13 (Capacity 6)",
+        url: "/space/29731",
+        eid: 29731,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29731"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R13";
+      resources.push({
+        id: "eid_29732",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R14 (Capacity 6)",
+        url: "/space/29732",
+        eid: 29732,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29732"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R14";
+      resources.push({
+        id: "eid_29733",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R15 (Capacity 6)",
+        url: "/space/29733",
+        eid: 29733,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29733"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R15";
+      resources.push({
+        id: "eid_29734",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R16 (Capacity 6)",
+        url: "/space/29734",
+        eid: 29734,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29734"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R16";
+      resources.push({
+        id: "eid_29735",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R17 (Capacity 6)",
+        url: "/space/29735",
+        eid: 29735,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29735"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R17";
+      resources.push({
+        id: "eid_29736",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R18 (Capacity 6)",
+        url: "/space/29736",
+        eid: 29736,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29736"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R18";
+      resources.push({
+        id: "eid_29737",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R19 (Capacity 6)",
+        url: "/space/29737",
+        eid: 29737,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29737"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R19";
+      resources.push({
+        id: "eid_29738",
+        title: "YRL\u0020Collaboration\u0020Pod\u0020R20 (Capacity 6)",
+        url: "/space/29738",
+        eid: 29738,
+        gid: 7750,
+        lid: 5567,
+        grouping: "YRL\u0020Collaboration\u0020Pods",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 6,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29738"] =
+        "YRL\u0020Collaboration\u0020Pod\u0020R20";
+      resources.push({
+        id: "eid_29703",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G01 (Capacity 8)",
+        url: "/space/29703",
+        eid: 29703,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29703"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G01";
+      resources.push({
+        id: "eid_29704",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G02 (Capacity 8)",
+        url: "/space/29704",
+        eid: 29704,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29704"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G02";
+      resources.push({
+        id: "eid_29705",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G03 (Capacity 8)",
+        url: "/space/29705",
+        eid: 29705,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29705"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G03";
+      resources.push({
+        id: "eid_29706",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G04 (Capacity 8)",
+        url: "/space/29706",
+        eid: 29706,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29706"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G04";
+      resources.push({
+        id: "eid_29707",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G05 (Capacity 8)",
+        url: "/space/29707",
+        eid: 29707,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29707"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G05";
+      resources.push({
+        id: "eid_29708",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G06 (Capacity 8)",
+        url: "/space/29708",
+        eid: 29708,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29708"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G06";
+      resources.push({
+        id: "eid_29709",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G07 (Capacity 8)",
+        url: "/space/29709",
+        eid: 29709,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29709"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G07";
+      resources.push({
+        id: "eid_29710",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G08 (Capacity 8)",
+        url: "/space/29710",
+        eid: 29710,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29710"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G08";
+      resources.push({
+        id: "eid_29712",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G09 (Capacity 8)",
+        url: "/space/29712",
+        eid: 29712,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29712"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G09";
+      resources.push({
+        id: "eid_29713",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G10 (Capacity 8)",
+        url: "/space/29713",
+        eid: 29713,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29713"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G10";
+      resources.push({
+        id: "eid_29714",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G11 (Capacity 8)",
+        url: "/space/29714",
+        eid: 29714,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29714"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G11";
+      resources.push({
+        id: "eid_29715",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G12 (Capacity 8)",
+        url: "/space/29715",
+        eid: 29715,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29715"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G12";
+      resources.push({
+        id: "eid_29716",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G13 (Capacity 8)",
+        url: "/space/29716",
+        eid: 29716,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29716"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G13";
+      resources.push({
+        id: "eid_29717",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G14 (Capacity 8)",
+        url: "/space/29717",
+        eid: 29717,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29717"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G14";
+      resources.push({
+        id: "eid_29718",
+        title: "YRL\u0020Group\u0020Study\u0020Room\u0020G15 (Capacity 8)",
+        url: "/space/29718",
+        eid: 29718,
+        gid: 7749,
+        lid: 5567,
+        grouping: "YRL\u0020Group\u0020Study\u0020Rooms",
+        gtype: 2,
+        gBookingSelectableTime: false,
+        capacity: 8,
+        hasInfo: true,
+        thumbnail: ""
+      });
+
+      resourceNameIdMap["eid_29718"] =
+        "YRL\u0020Group\u0020Study\u0020Room\u0020G15";
+      resourcesLocationIdMap[5567] = resources;
+
+      var capacityRangesMap = {};
+      capacityRangesMap[0] = {
+        min: 0,
+        max: 9223372036854775807
+      };
+      capacityRangesMap[1] = {
+        min: 0,
+        max: 4
+      };
+      capacityRangesMap[2] = {
+        min: 5,
+        max: 8
+      };
+      capacityRangesMap[3] = {
+        min: 9,
+        max: 12
+      };
+      capacityRangesMap[4] = {
+        min: 13,
+        max: 9223372036854775807
+      };
+
+      function spacesGetResourcesMatchingCapacity(lid) {
+        var resourcesForCapacity = [];
+        var capacity = jQuery("#capacity").val();
+        var capacityRange = capacityRangesMap[capacity];
+        var resources = resourcesLocationIdMap[lid];
+
+        for (var i = 0; i < resources.length; i++) {
+          var resource = resources[i];
+          if (
+            resource.capacity >= capacityRange.min &&
+            resource.capacity <= capacityRange.max
+          ) {
+            resourcesForCapacity.push(resource);
+          }
+        }
+
+        return resourcesForCapacity;
+      }
+
+      var locationIdsUsingLibAuthMap = {};
+      var locationIsUsingLibAuth = false;
+      var locationIdInFocus = null;
+
+      function timeGridClickedOnAvailableRoom_AllLocations(lid, calEvent) {
+        var timeGrid = timeGridLidMap[lid];
+
+        locationIsUsingLibAuth = lid in locationIdsUsingLibAuthMap;
+
+        if (!time_grid) {
+          time_grid = timeGrid;
+          locationIdInFocus = lid;
+
+          // hide all other time grids
+          jQuery("#s-lc-4361").toggle(lid == 4361);
+          jQuery("#s-lc-5567").toggle(lid == 5567);
+
+          var wantEquipmentButton =
+            jQuery.inArray(lid, [4382, 4752, 4372, 4395, 4361]) !== -1;
+          jQuery("#eq_cart").toggle(wantEquipmentButton);
+        }
+
+        return timeGridClickedOnAvailableRoom(calEvent);
+      }
+
+      function pendingRoomBookingsAreNowEmpty() {
+        jQuery("#s-lc-eq-form-box").hide();
+
+        // show all time grids
+        jQuery("#s-lc-4361").show();
+        jQuery("#s-lc-5567").show();
+
+        if (time_grid) {
+          // refresh the availability of this particular grid
+          time_grid.fullCalendar("refetchEvents", pendingRoomBookings);
+        }
+
+        time_grid = null;
+        locationIdInFocus = null;
+      }
+
+      jQuery(function() {
+        if (jQuery(window).width() < 768) {
+          fixedSlotWidth = 70;
+        }
+
+        // default the selection to the all locations option - only useful when patron uses back button on browser to get to this page
+        jQuery("#lid").val(0);
+
+        setupTimeGrid_4361();
+        setupTimeGrid_5567();
+
+        tgSetupDateManipulationVisuals();
+
+        tgSetupDateManipulationChangeHandler(timeGridLidMap[4361]);
+        tgSetupDateManipulationChangeHandler(timeGridLidMap[5567]);
+
+        postTimeGridCreation();
+        accessibleIcons();
+
+        jQuery("#capacity").on("change", function() {
+          if (time_grid) {
+            time_grid.fullCalendar("refetchResources");
+          } else {
+            timeGridLidMap[4361].fullCalendar("refetchResources");
+            timeGridLidMap[5567].fullCalendar("refetchResources");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

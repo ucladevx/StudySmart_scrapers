@@ -1,0 +1,30 @@
+{
+  "name": "backend-v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node scheduler.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aseem191/backend-v2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aseem191/backend-v2/issues"
+  },
+  "homepage": "https://github.com/aseem191/backend-v2#readme",
+  "dependencies": {
+    "aws-sdk": "^2.441.0",
+    "bluebird": "^3.5.4",
+    "body-parser": "^1.18.3",
+    "jsdom": "^14.0.0",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.23",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  }
+}
