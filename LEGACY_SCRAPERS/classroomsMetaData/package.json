@@ -1,0 +1,19 @@
+{
+  "name": "classroommetadata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.544.0",
+    "index.js": "0.0.3",
+    "moment": "^2.24.0",
+    "package": "^1.0.1",
+    "package-lock.json": "^1.0.0",
+    "request": "^2.88.0"
+  }
+}
