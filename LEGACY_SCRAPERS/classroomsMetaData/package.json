@@ -11,7 +11,7 @@
   "dependencies": {
     "aws-sdk": "^2.544.0",
     "index.js": "0.0.3",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "package": "^1.0.1",
     "package-lock.json": "^1.0.0",
     "request": "^2.88.0"
