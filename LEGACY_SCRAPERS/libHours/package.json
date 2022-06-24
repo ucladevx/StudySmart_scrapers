@@ -11,7 +11,7 @@
   "dependencies": {
     "aws-sdk": "^2.464.0",
     "bluebird": "^3.5.5",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "request-promise": "^4.2.4"
   }
 }
